@@ -3,6 +3,10 @@ resolver:
   ng:
     resolvconf:
       enabled: False
+    networkmanager:
+      #By default we disable networkmanager owning resolv.conf to avoid conflict 
+      disable_resolvconf: True
+      file: /etc/NetworkManager/NetworkManager.conf
   domain: example.com
   nameservers:
     - 8.8.8.8
