@@ -5,15 +5,10 @@ Defaults:
       remove: True
       file: /run/resolvconf/resolv.conf
     networkmanager:
-      ### For preventing NM managing resolvconf
-      disable_resolvconf: True
+      # Disable DNS management in NetworkManager.
+      managed: True
       file: /etc/NetworkManager/NetworkManager.conf
       service: NetworkManager
-      regex:
-       {% raw %}
-        - ['santize', '^(?!#)(?:\s?dns\s?=.*$)', "''",]
-        - ['none', '^(?!#)(\s?\[\s?main\s?\].*$\n+)^(?:\s?dns\s?=\s?.*)?(.*)', '\1\ndns=none\n\2',]
-       {% endraw %}
   nameservers:
     - 8.8.8.8
     - 8.8.4.4
