@@ -16,14 +16,12 @@ platforms:
         - apt-get update && apt-get install -y locales ifupdown network-manager
         - locale-gen en_US.UTF-8
         - update-locale LANG=en_US.UTF-8
-        - cat /etc/NetworkManager/NetworkManager.conf /proc/1/cpuset
       run_command: /lib/systemd/systemd
   - name: centos-7-with-network-manager
     driver_config:
       image: centos:7
       provision_command:
         - yum install NetworkManager -y
-        - cat /etc/NetworkManager/NetworkManager.conf /proc/1/cpuset
       run_command: /usr/lib/systemd/systemd
 
 provisioner:
