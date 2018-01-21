@@ -5,18 +5,9 @@ Defaults:
       remove: True
       file: /run/resolvconf/resolv.conf
     networkmanager:
-      manage_dns: False
+      managed: True
       file: /etc/NetworkManager/NetworkManager.conf
       service: NetworkManager
-      regex:
-       {% raw %}
-        - name: santize
-          search: '^(?!#)(?:\s?dns\s?=.*$)'
-          replace: "''"
-        - name: none
-          search: '^(?!#)(\s?\[\s?main\s?\].*$\n+)^(?:\s?dns\s?=\s?.*)?(.*)'
-          replace: '\1\ndns=none\n\2'
-       {% endraw %}
   nameservers:
     - 8.8.8.8
     - 8.8.4.4

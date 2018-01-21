@@ -41,25 +41,25 @@
       - file: {{ sls }}~update-resolv.conf-file
 {% endif %}
 
-{# Prevent NetworkManager managing resolvconf #}
+{# Prevent NetworkManager managing resolv.conf #}
   {% if salt['file.file_exists'](resolver.ng.networkmanager.file)
-        and not resolver.ng.networkmanager.manage_dns %}
-    {% for conf in resolver.ng.networkmanager.regex %}
+        and resolver.ng.networkmanager.managed %}
 
-{{ sls }}~networkmanager_dns_{{ conf.name }}:
-  file.replace:
+{{ sls }}~networkmanager_dns:
+  ini.options_present:
     - name: {{ resolver.ng.networkmanager.file }}
-    - pattern: {{ conf.search }}
-    - repl: {{ conf.replace }}
-    - flags: ['IGNORECASE', 'MULTILINE']
+    - separator: '='
+    - strict: False
+    - sections:
+        main:
+          dns: 'none'
     - onlyif: systemctl is-enabled {{ resolver.ng.networkmanager.service }}
     - require:
       - file: {{ sls }}~update-resolv.conf-file
     - watch_in:
-      - service: {{ sls }}~networkmanager_dns_{{ conf.name }}
+      - service: {{ sls }}~networkmanager_dns
   service.running:
     - name: {{ resolver.ng.networkmanager.service }}
     - enable: True
 
-      {% endfor %}
   {% endif %}
